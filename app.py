@@ -1,9 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash
 from src.users.services import UserServices
 
 
 app =Flask(__name__)
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False 
+db = SQLAlchemy(app)
 
 
 @app.route('/', methods=['GET'])
@@ -17,9 +21,9 @@ def login_process():
         username = request.form.get('username')
         password = request.form.get('password')
         row = UserServices.login(username, password)
-    if not row:
-        return redirect(url_for("login"))
-    return redirect(url_for("home"))
+        if not row:
+            return redirect(url_for("login"))
+        return redirect(url_for("home"))
     
 
 
@@ -37,9 +41,9 @@ def register_process():
         password = request.form.get('password')
         # confirm_password = request.form.get('confirm_password')
         row = UserServices.register(username, email, password)
-    if not row:
-        return redirect(url_for("register"))
-    return redirect(url_for("login"))
+        if not row:
+            return redirect(url_for("register"))
+        return redirect(url_for("login"))
     
     
 
@@ -55,6 +59,8 @@ def search_places():
 
     
     return render_template("home.html", username=session['username'])  
+
+
 
 
 if __name__ == "__main__":
