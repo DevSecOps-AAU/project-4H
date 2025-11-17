@@ -1,26 +1,32 @@
-
-from datetime import datetime
+from sqlalchemy import insert, select, func
 from src.database.execute import DBClinet
-from werkzeug.security import generate_password_hash, check_password_hash
-from src.users.schema import users
+from src.analysis.schema import history
 
-class UserQueries:
+class SentimentAnalysisQuieres:
     def __init__(self):
         self.db_client = DBClinet()
 
-    def login(self, username, password):
-        query = users.select().where(users.c.username == username)
-        row = self.db_client.execute_one(query)
-        if not row:
-            return None, "no user have been found" 
-        if not check_password_hash(row['password'], password):
-            return None, "Invalid password"
+    def record_sentiment(self, text_input, sentiment_score):
+        "Insert a new record into history table"
+        stmt = insert(history).values(
+            text=text_input,
+            score=sentiment_score
+        )
+        row = self.db_client.execute_one(stmt)
+        return row
+
+    def get_history(self):
+        "Retrive all records"
+
+        stmt = select(history)
+        row = self.db_client.execute_all(stmt)
         return row
     
-    def register(self, username, email , password):
-        hashed_password = generate_password_hash(password)
-        query = users.insert().values(username = username, email=email, password=hashed_password)
-        row = self.db_client.execute_one(query)
-        if not row:
-            return None, "user account creation issue"
+
+    def get_analytics(self):
+        stmt = select (
+            func.count(history.c.id).label("total_analysis"),
+            func.avg(history.c.score).label("average_score")
+        )
+        row = self.db_client.execute_all(stmt)
         return row
