@@ -1,29 +1,37 @@
-CREATE TABLE "users" (
-  "id" uuid PRIMARY KEY,
-  "username" varchar,
-  "email" varchar,
-  "password" text,
-  "created_at" timestamp DEFAULT 'now()',
-  "last_login" timestamp DEFAULT 'now()'
-);
+-- Users table
+CREATE TABLE
+  users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
+    username TEXT,
+    email TEXT UNIQUE,
+    password TEXT,
+    last_login_at TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW (),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW ()
+  );
 
-CREATE TABLE "History" (
-  "id" uuid PRIMARY KEY,
-  "user_id" uuid,
-  "input_text" text,
-  "sentiment_label" text,
-  "confident_score" text,
-  "analysis_timestamp" timestamp DEFAULT 'now()'
-);
+-- Analysis history table
+CREATE TABLE
+  analysis_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
+    user_id UUID REFERENCES users (id) ON DELETE CASCADE,
+    input_text TEXT,
+    sentiment_label TEXT,
+    confidence_score TEXT,
+    last_analysis_at TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW (),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW ()
+  );
 
-CREATE TABLE "Performance" (
-  "id" uuid,
-  "model_version" int,
-  "accuracy" int,
-  "f1_score" int,
-  "traning_date" timestamp DEFAULT 'now()',
-  "is_active" bool,
-  PRIMARY KEY ("id", "model_version")
-);
-
-ALTER TABLE "History" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+-- Model performance table
+CREATE TABLE
+  model_performance (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
+    model_version TEXT,
+    accuracy TEXT,
+    fl_score INTEGER,
+    training_date TIMESTAMP NOT NULL DEFAULT NOW (),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW (),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW ()
+  );

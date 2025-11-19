@@ -1,26 +1,49 @@
+from sqlalchemy import (
+    select,
+    insert,
+    update,
+    delete,
+)
+from src.users.schemas import users
+from src.authentication.hash import HashHelper
+from src.database.execution import db_client
+from src.users.models import UserRequest, UserUpdate
+from uuid import UUID
 
-from datetime import datetime
-from src.database.execute import DBClinet
-from werkzeug.security import generate_password_hash, check_password_hash
-from src.users.schema import users
 
 class UserQueries:
     def __init__(self):
-        self.db_client = DBClinet()
+        self.db_client = db_client
+        self.hash_helper = HashHelper()
 
-    def login(self, username, password):
-        query = users.select().where(users.c.username == username)
-        row = self.db_client.execute_one(query)
-        if not row:
-            return None, "no user have been found" 
-        if not check_password_hash(row['password'], password):
-            return None, "Invalid password"
-        return row
-    
-    def register(self, username, email , password):
-        hashed_password = generate_password_hash(password)
-        query = users.insert().values(username = username, email=email, password=hashed_password)
-        row = self.db_client.execute_one(query)
-        if not row:
-            return None, "user account creation issue"
-        return row
+    def create_user(self, user_data: UserRequest):
+        data = dict(user_data.model_dump(exclude_unset=True))
+        data["password"] = self.hash_helper.hash_password(data["password"])
+        stmt = insert(users).values(**data).returning(users)
+        result = self.db_client.execute_one(stmt)
+        return result
+
+    def get_user_by_id(self, user_id: UUID):
+        stmt = select(users).where(users.c.id == user_id)
+        result = self.db_client.execute_one(stmt)
+        return result
+
+    def get_user_by_email(self, email: str):
+        stmt = select(users).where(users.c.email == email)
+        result = self.db_client.execute_one(stmt)
+        return result
+
+    def update_user_by_id(self, user_id: UUID, update_data: UserUpdate):
+        stmt = (
+            update(users)
+            .where(users.c.id == user_id)
+            .values(**update_data)
+            .returning(users)
+        )
+        result = self.db_client.execute_one(stmt)
+        return result
+
+    def delete_user_by_id(self, user_id: UUID):
+        stmt = delete(users).where(users.c.id == user_id).returning(users)
+        result = self.db_client.execute_one(stmt)
+        return result

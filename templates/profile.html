@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <div class="page-wrapper profile-bg">
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1>My Profile</h1>
+                    <form action="/logout" method="POST" style="display: inline;">
+                        <button type="submit" class="btn-logout">
+                    </form>
+
+
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+
+            <div class="profile-card">
+                <div class="profile-cover">
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar">
+                            <div class="profile-avatar-inner" id="avatar-initials">{{ data.username[0] }}</div>
+                        </div>
+                        <div class="camera-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle cx="12" cy="13" r="4"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-content">
+                    <div class="profile-info-header">
+                        <div>
+                            <h2 id="profile-name">{{ data.username }}</h2>
+                            <div class="profile-email">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                <span id="profile-email-text">{{ data.email }}</span>
+                            </div>
+                        </div>
+                        <form action="/history/{{data.id}}" method="POST" style="display: inline;">
+                            <button type="submit" class="btn-edit">Display Statistics</button>
+                        </form>
+                         <form action="/sentiment/{{data.id}}" method="GET" style="display: inline;">
+                            <button type="submit" class="btn-edit">Add new Sentiment</button>
+                        </form>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card stat-purple">
+                            <div class="stat-number">124</div>
+                            <div class="stat-label">Posts</div>
+                        </div>
+                        <div class="stat-card stat-blue">
+                            <div class="stat-number">2.5K</div>
+                            <div class="stat-label">Followers</div>
+                        </div>
+                        <div class="stat-card stat-pink">
+                            <div class="stat-number">890</div>
+                            <div class="stat-label">Following</div>
+                        </div>
+                    </div>
+
+                    <div class="about-section">
+                        <h3>About Me</h3>
+                        <p>Creative designer and developer passionate about building beautiful, user-friendly experiences. Love exploring new technologies and creating innovative solutions.</p>
+                        
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Location</div>
+                                <div class="detail-value">New York, USA</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Member Since</div>
+                                <div class="detail-value">January 2024</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Website</div>
+                                <div class="detail-value link">www.johndoe.com</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Phone</div>
+                                <div class="detail-value">+1 234 567 890</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
