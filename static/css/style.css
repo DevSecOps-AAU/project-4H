@@ -65,11 +65,11 @@ body {
 }
 
 .purple-gradient {
-  background: linear-gradient(135deg, #667eea 0%, #ec4899 100%);
+  background: linear-gradient(#8ee719 0%, #237912 50%, #e9ca1c 100%);
 }
 
 .blue-gradient {
-  background: linear-gradient(135deg, #2563eb 0%, #14b8a6 100%);
+  background: linear-gradient(135deg, #eb25ca 0%, #7006d4 50%, #b8143d 100%);
 }
 
 .analyzer-container{
@@ -223,7 +223,7 @@ body {
 }
 
 .purple-btn {
-  background: linear-gradient(135deg, #667eea 0%, #ec4899 100%);
+  background: linear-gradient(135deg, #8ee719 0%, #237912 50%, #e9ca1c 100%);
 }
 
 .purple-btn:hover {
@@ -232,7 +232,7 @@ body {
 }
 
 .blue-btn {
-  background: linear-gradient(135deg, #2563eb 0%, #14b8a6 100%);
+  background: linear-gradient(135deg, #eb25ca 0%, #7006d4 50%, #b8143d 100%);
 }
 
 .blue-btn:hover {
@@ -326,7 +326,7 @@ body {
 
 .profile-cover {
   height: 200px;
-  background: linear-gradient(135deg, #667eea 0%, #9333ea 50%, #ec4899 100%);
+  background: linear-gradient(135deg, #e55946 0%, #ea3333 50%, #ecb248 100%);
   position: relative;
 }
 
@@ -415,7 +415,7 @@ body {
 }
 
 .btn-edit {
-  background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%);
+  background: linear-gradient(135deg, #e55946 0%, #ea3333 50%, #ecb248 100%);
   color: white;
   border: none;
   padding: 12px 24px;

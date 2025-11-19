@@ -4,38 +4,9 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class AnalysisHistoryCreate(BaseModel):
+class UserCreate(BaseModel):
     user_id: UUID
     input_text: str
-
-
-class AnalysisHistory(BaseModel):
-    id: UUID
-    user_id: UUID
-    input_text: str
-    sentiment_label: str
-    confidence_score: str
-    created_at: datetime
-    updated_at: datetime
-    last_analysis_at: datetime
-
-
-class ModelPerformanceCreate(BaseModel):
-    model_version: str
-    accuracy: str
-    fl_score: int
-
-
-class ModelPerformance(BaseModel):
-    id: UUID
-    model_version: str
-    accuracy: str
-    fl_score: int
-    training_date: datetime
-    is_active: datetime
-    created_at: datetime
-    updated_at: datetime
-
 
 class UserRequest(BaseModel):
     username: str

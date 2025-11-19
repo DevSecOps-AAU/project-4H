@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from src.users.services import UsersService
 from src.users.models import UserRequest
+from src.analysis_history.services import HistoryService
+from src.analysis_history.models import AnalysisHistory
 
 
 app = Flask(__name__)
 app.secret_key = "your-secret-key"
 users_service = UsersService()
+history_service = HistoryService()
 
 
 @app.route("/")
@@ -92,6 +95,16 @@ def user_profile(user_id):
 
     user = users_service.get_profile(user_id)
     return render_template("profile.html", data=user)
+
+@app.route("/history/<user_id>")
+def show_history(user_id):
+    sess_user = session.get(str(user_id))
+    if not sess_user:
+        flash("Please log in to continue.", "error")
+        return redirect(url_for("history"))
+    
+    history = history_service.get_history_by_user_id(user_id)
+    return render_template('history.html', user_history=history)
 
 
 if __name__ == "__main__":

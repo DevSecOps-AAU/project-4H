@@ -3,14 +3,16 @@ from sqlalchemy.dialects.postgresql import UUID
 from src.database.execution import db_client
 
 
-users = Table(
-    "users",
+
+analysis_history = Table(
+    "analysis_history",
     db_client.metadata,
     Column("id", UUID(as_uuid=True), primary_key=True, default=db_client.new_uuid),
-    Column("username", Text),
-    Column("email", Text, unique=True),
-    Column("password", Text),
-    Column("last_login_at", DateTime, nullable=True, onupdate=db_client.now),
+    Column("user_id", UUID(as_uuid=True), nullable=False),
+    Column("input_text", Text),
+    Column("sentiment_label", Text),
+    Column("confidence_score", Text),
+    Column("last_analysis_at", DateTime, nullable=False, **db_client.default_now),
     Column("created_at", DateTime, nullable=False, **db_client.default_now),
     Column(
         "updated_at",
@@ -20,5 +22,3 @@ users = Table(
         **db_client.default_now,
     ),
 )
-
-
